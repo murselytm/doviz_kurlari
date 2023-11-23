@@ -17,14 +17,17 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Map<String, dynamic>? currencyData;
+  Map<String, dynamic>? goldData;
 
   @override
   void initState() {
     super.initState();
     fetchData();
+    fetchGoldData();
     const Duration updateInterval = Duration(seconds: 10);
     Timer.periodic(updateInterval, (Timer t) {
       fetchData();
+      fetchGoldData();
       print("10 saniyelik tekrarlama");
     });
   }
@@ -36,6 +39,18 @@ class _MyAppState extends State<MyApp> {
     if (response.statusCode == 200) {
       setState(() {
         currencyData = json.decode(response.body);
+      });
+    }
+  }
+
+  Future<void> fetchGoldData() async {
+    final response = await http.get(Uri.parse(
+        'https://api.genelpara.com/iframe/?symbol=altin&altin=GA,C,Y,T,CMR&stil=stil-1&renk=beyaz'));
+    //Atın json kodu https://gist.github.com/berkocan/6da90f1aaa7b806317c99f9e636947bf
+    if (response.statusCode == 200) {
+      setState(() {
+        goldData = json.decode(response.body);
+        print(goldData);
       });
     }
   }
@@ -61,11 +76,22 @@ class _MyAppState extends State<MyApp> {
             : SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
+                    SizedBox(
+                      height: 8,
+                    ),
                     buildCurrencyCard('Dolar', currencyData?['USD'], 'us'),
+                    SizedBox(
+                      height: 8,
+                    ),
                     buildCurrencyCard('Euro', currencyData?['EUR'], 'eu'),
-                    buildCurrencyCard(
-                        'Sterlin', currencyData?['GBP'], 'gb-eng'),
-                    buildCurrencyCard('Altın', currencyData?['GA'], 'tr'),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    buildCurrencyCard('Sterlin', currencyData?['GBP'], 'uk'),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    buildCurrencyCard('Tam Altın', currencyData?['GA'], 'gold'),
                   ],
                 ),
               ),
@@ -98,6 +124,12 @@ class _MyAppState extends State<MyApp> {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            Text(currency,
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                )),
             Text('Fiyat: $satis', style: price),
             Text('Değişim: $degisim',
                 style: degisim < 0 ? smallGreen : smallRed),

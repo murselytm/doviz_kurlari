@@ -57,7 +57,6 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -67,7 +66,9 @@ flutter:
     - lib/flags/svg/tr.svg
     - lib/flags/svg/eu.svg
     - lib/flags/svg/gb-eng.svg
-
+    - lib/flags/svg/gold.svg
+    - lib/flags/svg/united.svg
+    - lib/flags/svg/uk.svg
 
   # To add assets to your application, add an assets section, like this:
   # assets:
